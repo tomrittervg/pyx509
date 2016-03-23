@@ -4,6 +4,8 @@
 # setup-ified it
 #
 from setuptools import setup, find_packages
+from setuptools.extension import Extension
+from Cython.Build import cythonize
 
 setup(
     name = 'pyx509',
@@ -25,5 +27,8 @@ setup(
         'Topic :: Security',
     ],
     packages = find_packages(),
+    ext_modules = cythonize([
+        Extension("pyx509.pkcs7.asn1_models.general_types", ["pyx509/pkcs7/asn1_models/general_types.pyx"]),
+    ]),
     scripts = ['x509_parse.py',],
 )
