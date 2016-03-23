@@ -630,8 +630,8 @@ class Extension():
                 #unless marked critical, though it doesn't cover all cases.
                 if self.is_critical:
                     raise
-        elif self.is_critical:
-            raise CertificateError("Critical extension OID %s not understood" % self.id)
+        #elif self.is_critical:
+        #    raise CertificateError("Critical extension OID %s not understood" % self.id)
 
 class Certificate():
     '''
