@@ -21,6 +21,8 @@ Created on Dec 9, 2009
 
 '''
 
+import bitarray
+
 # dslib imports
 from pyasn1.type import tag,namedtype,namedval,univ,char,useful
 from pyasn1 import error
@@ -42,15 +44,18 @@ class ConvertibleBitString(univ.BitString):
         '''
         def _tuple_to_byte(tuple):          
           return chr(int(''.join(map(str, tuple)),2))
-      
-        res = ''        
-        byte_len = len(self._value) / 8
-        for byte_idx in xrange(byte_len):
-            bit_idx = byte_idx * 8
-            byte_tuple = self._value[bit_idx:bit_idx + 8]
-            byte = _tuple_to_byte(byte_tuple)            
-            res += byte
-        return res
+
+        if isinstance(self._value, bitarray.bitarray):
+            return self._value.tobytes()
+        else:
+            res = ''        
+            byte_len = len(self._value) / 8
+            for byte_idx in xrange(byte_len):
+                bit_idx = byte_idx * 8
+                byte_tuple = self._value[bit_idx:bit_idx + 8]
+                byte = _tuple_to_byte(byte_tuple)            
+                res += byte
+            return res
 
 class DirectoryString(univ.Choice):    
     componentType = namedtype.NamedTypes(
